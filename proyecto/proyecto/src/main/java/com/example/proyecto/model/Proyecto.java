@@ -1,34 +1,28 @@
 package com.example.proyecto.model;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "proyecto")
+@Table(name = "proyectos")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Proyecto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_proyecto", nullable = false, updatable = false)
     private Long idProyecto;
 
     @Column(nullable = false, length = 100)
-    private String nombre;
-
-    @Column(nullable = false, length = 255)
-    private String descripcion;
-
-    @Column(nullable = false)
-    private LocalDate fechaInicio;
-
-    private LocalDate fechaFin;
+    private String comentario;
 
     @Column(nullable = false)
     private Long estadoId;
@@ -37,8 +31,7 @@ public class Proyecto {
     private Long usuarioId;
 
     @Column(nullable = false)
-    private Long servicioId;
+    private Long contratacionId;
 
-    @Column(nullable = false)
-    private Long ubicacionId;
+    
 }

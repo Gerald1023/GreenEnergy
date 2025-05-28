@@ -1,35 +1,38 @@
 package com.example.resena.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "resenas")
+@Table(name="resena")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Resena {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_resena", nullable = false, updatable = false)
     private Long idResena;
 
-    @Column(nullable = false, length = 300)
+    @Column(nullable = false,length = 100)
     private String comentario;
-
+    
     @Column(nullable = false)
-    private int calificacion;
+    private LocalDate fechaComentario;
 
-    @Column(nullable = false)
-    private LocalDate fecha;
+    @Column(nullable = false)   
+    private Long idUsuario;
 
-    @Column(nullable = false)
-    private Long usuarioId;
+    @Column(nullable = false)   
+    private Long idServicio;
 
-    @Column(nullable = false)
-    private Long proyectoId;
 }
