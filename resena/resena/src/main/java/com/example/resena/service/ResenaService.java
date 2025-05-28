@@ -16,35 +16,40 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class ResenaService {
+
     @Autowired
     private ResenaRepository resenaRepository;
+
     @Autowired
     private UserClient userClient;
+
     @Autowired
     private ClienteClient clienteClient;
-    //metodo para consultar todas las resenas
-    public List<Resena> getResenas(){
+
+    public List<Resena> getResenas() {
         return resenaRepository.findAll();
     }
-    public Resena savResena(Resena nuevaResena) {
-        //verificar si el usuario existe preguntando al microservicio de usuario
+
+    public Resena saveResena(Resena nuevaResena) {
         Map<String, Object> user = userClient.getUsuarioById(nuevaResena.getIdUsuario());
-        //verifico si me trajo el usuario
         if (user == null || user.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado");
         }
-        //verificar si existe consultando al microservicio de servicio
+
         Map<String, Object> servicio = clienteClient.getServicioById(nuevaResena.getIdServicio());
-        //verifico si me trajo el servicio
         if (servicio == null || servicio.isEmpty()) {
             throw new RuntimeException("Servicio no encontrado");
         }
+
+        if (nuevaResena.getComentario() == null || nuevaResena.getComentario().isBlank()) {
+            throw new IllegalArgumentException("El comentario no puede estar vacio");
+        }
+
         return resenaRepository.save(nuevaResena);
     }
 
-    public Resena getResenaPorId(Long id){
-        return resenaRepository.findById(id).orElseThrow(()-> new RuntimeException("Resena no encontrado"));
+    public Resena getResenaPorId(Long id) {
+        return resenaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Resena no encontrada"));
     }
-
-
 }

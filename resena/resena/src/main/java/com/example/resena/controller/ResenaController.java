@@ -36,32 +36,33 @@ public class ResenaController {
     @PostMapping
     public ResponseEntity<?> crearResena(@RequestBody Resena nuevResena) {
         LocalDate despues = LocalDate.of(2025, 5, 28);
-        if (nuevResena.getFechaComentario().isBefore(despues)) {
+
+        if (nuevResena.getComentario() == null || nuevResena.getComentario().length() < 1 || nuevResena.getComentario().length() > 100) {
             return ResponseEntity.badRequest()
-                    .body("La fecha debe ser sobre el 28 de mayo de 2025.");
+                    .body("El comentario debe tener entre 1 y 100 caracteres.");
         }
-        if (nuevResena.getComentario().length() < 1 || nuevResena.getComentario().length() > 100) {
-            return ResponseEntity.badRequest().body("El comentario debe tener entre 1 a max 100 caracteres.");
+        if (nuevResena.getFechaComentario() == null || nuevResena.getFechaComentario().isBefore(despues)) {
+            return ResponseEntity.badRequest()
+                    .body("La fecha debe ser igual o posterior al 28 de mayo de 2025.");
         }
+
         try {
-            Resena resena = resenaService.savResena(nuevResena);
+            Resena resena = resenaService.saveResena(nuevResena);
             return ResponseEntity.status(201).body(resena);
         } catch (RuntimeException e) {
-            // Captura error por estado no encontrado
-            return ResponseEntity.status(404).body(e.getMessage());
+            // Captura error por usuario o servicio no encontrado
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resena> obtenerProyectoPorId(@PathVariable Long id) {
+    public ResponseEntity<Resena> obtenerResenaPorId(@PathVariable Long id) {
         try {
-            // verificar si existe el estado
             Resena resena = resenaService.getResenaPorId(id);
             return ResponseEntity.ok(resena);
         } catch (Exception e) {
-            // retorno codigo 404
             return ResponseEntity.notFound().build();
         }
-
     }
 }
+
