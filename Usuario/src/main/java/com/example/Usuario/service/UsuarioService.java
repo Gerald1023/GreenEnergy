@@ -19,11 +19,16 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private RolService rolService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UsuarioService(UsuarioRepository usuarioRepository, RolService rolService) {
         this.usuarioRepository = usuarioRepository;
         this.rolService = rolService;
     }
+
+
+    
     
     //metodo para buscar todos los usuarios
     public List<Usuario> obtenerUsuarios() {
